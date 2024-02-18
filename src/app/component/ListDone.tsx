@@ -1,6 +1,9 @@
+'use client'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const ListDone = ({data}:{data:any}) => {
+const ListDone = () => {
+  const data = useSelector(state => state.taskDone);
   return (
     <div className="col-span-4 border rounded-sm shadow-sm bg-white bg-opacity-25  w-full p-4">
 <h1 className="text-center text-2xl">Todolist selesai</h1>

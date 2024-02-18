@@ -1,13 +1,12 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import {  deleteTodo, editTodo, finishTodo } from '@/redux/actions/todoActions';
 
-interface ListTodoProps {
-  data: any;
-  handleDelete: (i: number) => void;
-  handleEdit: (i: number, value: string) => void;
-handleDone:(i:number)=>void
-  }
 
-const ListTodo: React.FC<ListTodoProps> = ({ data, handleDelete, handleEdit,handleDone }) => {
+const ListTodo = ()=> {
+  const dispatch = useDispatch()
+  const data = useSelector(state=>state.todoLists);
   const [editable, setEditable] = useState<number | undefined>();
   const [updateValue, setUpdateValue] = useState<string | undefined>();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,14 +45,14 @@ const ListTodo: React.FC<ListTodoProps> = ({ data, handleDelete, handleEdit,hand
             <div>
               <button
                 onClick={() => {
-                  handleEdit(i, updateValue || '');
+                 dispatch(editTodo(i,updateValue|| ''))
                   setEditable(undefined);
                 }}
                 className={`${i === editable ? '' : 'hidden'} h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800`}
               >
                 Update
               </button>
-              <button onClick={()=>handleDone(i)} className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+              <button onClick={()=>dispatch(finishTodo(i))} className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                 Done
               </button>
               <button
@@ -63,7 +62,7 @@ const ListTodo: React.FC<ListTodoProps> = ({ data, handleDelete, handleEdit,hand
                 Edit
               </button>
               <button
-                onClick={() => handleDelete(i)}
+                onClick={() => dispatch(deleteTodo(i))}
                 className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
               >
                 Hapus
